@@ -1,34 +1,35 @@
 sap.ui.define([
-    "sap/ui/core/mvc/Controller",
-    "sap/m/MessageToast"
+    "sap/ui/core/mvc/Controller"
 ],
     /**
      * @param {typeof sap.ui.core.mvc.Controller} Controller
      */
-    function (Controller, MessageToast) {
+    function (Controller) {
         "use strict";
 
         return Controller.extend("zjfbov.controller.View1", {
             onInit: function () {
+                // Cria a referencia do objeto da View
+                var oView  = this.getView();
 
+                // Cria o modelo JSON
+                var oModel = new sap.ui.model.json.JSONModel();
+
+                // Inseri os dados no modelo
+                oModel.setData({"usuario": {"nome": "Jefferson"}});
+
+                // Inseri o modelo na View 
+                oView.setModel(oModel);
             },
 
-            onCalcular: function(){
-                var oView = this.getView();
-                var iB1 = parseInt(oView.byId("b1").getValue());
-                var iB2 = parseInt(oView.byId("b2").getValue());
-                var iB3 = parseInt(oView.byId("b3").getValue());
-                var iB4 = parseInt(oView.byId("b4").getValue());
-                var fResultado = 0;
-                
-                fResultado = ( iB1 + iB2 + iB3 + iB4) / 4;
+            onExibirMensagem: function(){
+                var oI18n  = this.getView().getModel("i18n").getResourceBundle();
+                var oModel = this.getView().getModel();
 
-                oView.byId("resultado").setValue(fResultado);
-
-                MessageToast.show("Resultado = "+fResultado);
-
-                // MessageToast
-                // sap.m.MessageToast
+                // Extrai os dados do modelo (JSON)
+                var oData  = oModel.getData();
+                var sText = oI18n.getText("welcomeMsg",[oData.usuario.nome]);
+                alert(sText);
             }
 
         });
